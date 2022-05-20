@@ -1,0 +1,26 @@
+# We may decide to combine these for multiple services at a later time
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ include "offering_networking.fullname" . }}-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+      - {{ .Values.subdomain }}.{{ .Values.domain }}
+    tls:
+      httpsRedirect: true # sends 301 redirect for http requests
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: {{ include "offering_networking.fullname" . }}-tls # This should match the Certificate secretName
+    hosts:
+      - {{ .Values.subdomain }}.{{ .Values.domain }}

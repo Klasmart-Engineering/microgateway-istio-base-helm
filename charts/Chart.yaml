@@ -1,0 +1,6 @@
+apiVersion: v2
+name: istio-microgateway-networking
+description: Istio service mesh networking implementation for microgateway-based offerings
+type: application
+version: 0.1.0
+appVersion: 0.1.0

@@ -1,0 +1,20 @@
+# Requries cert-manager
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "offering_networking.fullname" . }}-tls
+  namespace: {{ .Values.istio.namespace }}
+  annotations:
+    # Required so that we don't end up in a 'deadlock' situation between cert-manager and istio gateway
+    cert-manager.io/issue-temporary-certificate: "true"
+spec:
+  secretName: {{ include "offering_networking.fullname" . }}-tls
+  commonName: {{ .Values.subdomain }}.{{ .Values.domain }}
+  dnsNames:
+    - {{ .Values.subdomain }}.{{ .Values.domain }}
+  issuerRef:
+    name: {{ .Values.istio.certIssuerName }}
+    # We can reference ClusterIssuers by changing the kind here.
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    kind: ClusterIssuer
+    # group: cert-manager.io

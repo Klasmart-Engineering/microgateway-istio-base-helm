@@ -1,0 +1,17 @@
+{{ $fullname := (include "offering_networking.fullname" .) }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ $fullname }}-vsvc
+  namespace: {{ .Release.Namespace }}
+spec:
+  hosts:
+    - {{ .Values.subdomain }}.{{ .Values.domain }}
+  gateways:
+    - {{ include "offering_networking.fullname" . }}-gateway
+  http:
+    - route:
+        - destination:
+            host: {{ .Values.serviceName }}
+            port:
+                number: 80

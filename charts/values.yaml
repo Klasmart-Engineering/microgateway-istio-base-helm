@@ -1,0 +1,9 @@
+nameOverride: ""
+fullNameOverride: ""
+domain: ""
+subdomain: ""
+serviceName: ""
+
+istio:
+  certIssuerName: letsencrypt-istio-dns
+  namespace: istio-system
